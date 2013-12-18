@@ -54,6 +54,7 @@ if(jQuery) (function($){
 					$.post(o.script, { dir: t }, function(data) {
 						$(c).find('.start').html('');
 						$(c).removeClass('wait').append(data);
+						$(c).trigger('jqueryFileTree.loaded');
 						if( o.root == t ) $(c).find('UL:hidden').show(); else $(c).find('UL:hidden').slideDown({ duration: o.expandSpeed, easing: o.expandEasing });
 						bindTree(c);
 					});
