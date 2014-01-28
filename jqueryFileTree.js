@@ -1,6 +1,9 @@
 // jQuery File Tree Plugin
 //
-// Version 1.01
+// Version 1.02
+//
+// Greg Cochard
+// 28 January 2014
 //
 // Cory S.N. LaViska
 // A Beautiful Site (http://abeautifulsite.net/)
@@ -22,6 +25,7 @@
 //
 // History:
 //
+// 1.02 - Adding event trigger when loaded (28 January 2014)
 // 1.01 - updated to work with foreign characters in directory/file names (12 April 2008)
 // 1.00 - released (24 March 2008)
 //
@@ -35,16 +39,16 @@ if(jQuery) (function($){
 	$.extend($.fn, {
 		fileTree: function(o, h) {
 			// Defaults
-			if( !o ) var o = {};
-			if( o.root == undefined ) o.root = '/';
-			if( o.script == undefined ) o.script = 'jqueryFileTree.php';
-			if( o.folderEvent == undefined ) o.folderEvent = 'click';
-			if( o.expandSpeed == undefined ) o.expandSpeed= 500;
-			if( o.collapseSpeed == undefined ) o.collapseSpeed= 500;
-			if( o.expandEasing == undefined ) o.expandEasing = null;
-			if( o.collapseEasing == undefined ) o.collapseEasing = null;
-			if( o.multiFolder == undefined ) o.multiFolder = true;
-			if( o.loadMessage == undefined ) o.loadMessage = 'Loading...';
+			o = o || {};
+			o.root = o.root || '/';
+			o.script = o.script || 'jqueryFileTree.php';
+			o.folderEvent = o.folderEvent || 'click';
+			o.expandSpeed = o.expandSpeed || 500;
+			o.collapseSpeed = o.collapseSpeed || 500;
+			o.expandEasing = o.expandEasing || null;
+			o.collapseEasing = o.collapseEasing || null;
+			o.multiFolder = o.multiFolder || true;
+			o.loadMessage = o.loadMessage || 'Loading...';
 			
 			$(this).each( function() {
 				
@@ -54,9 +58,9 @@ if(jQuery) (function($){
 					$.post(o.script, { dir: t }, function(data) {
 						$(c).find('.start').html('');
 						$(c).removeClass('wait').append(data);
-						$(c).trigger('jqueryFileTree.loaded');
 						if( o.root == t ) $(c).find('UL:hidden').show(); else $(c).find('UL:hidden').slideDown({ duration: o.expandSpeed, easing: o.expandEasing });
 						bindTree(c);
+						$(c).trigger('jqueryFileTree.loaded');
 					});
 				}
 				
